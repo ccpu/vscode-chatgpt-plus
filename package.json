@@ -27,57 +27,57 @@
     "ai"
   ],
   "activationEvents": [
-    "onView:vscode-chatgpt.view",
-    "onCommand:vscode-chatgpt.clearSession",
-    "onCommand:vscode-chatgpt.freeText",
-    "onCommand:vscode-chatgpt.addTests",
-    "onCommand:vscode-chatgpt.findProblems",
-    "onCommand:vscode-chatgpt.optimize",
-    "onCommand:vscode-chatgpt.explain",
-    "onCommand:vscode-chatgpt.clearConversation",
-    "onCommand:vscode-chatgpt.exportConversation"
+    "onView:chatgpt.view",
+    "onCommand:chatgpt.clearSession",
+    "onCommand:chatgpt.freeText",
+    "onCommand:chatgpt.addTests",
+    "onCommand:chatgpt.findProblems",
+    "onCommand:chatgpt.optimize",
+    "onCommand:chatgpt.explain",
+    "onCommand:chatgpt.clearConversation",
+    "onCommand:chatgpt.exportConversation"
   ],
   "main": "./out/extension.js",
   "contributes": {
     "menus": {
       "editor/context": [
         {
-          "command": "vscode-chatgpt.refactor",
+          "command": "chatgpt.refactor",
           "when": "editorHasSelection",
           "group": "chatGpt@3"
         },
         {
-          "command": "vscode-chatgpt.addTests",
+          "command": "chatgpt.addTests",
           "group": "chatGpt@1",
           "when": "editorHasSelection"
         },
         {
-          "command": "vscode-chatgpt.findProblems",
+          "command": "chatgpt.findProblems",
           "group": "chatGpt@2",
           "when": "editorHasSelection"
         },
         {
-          "command": "vscode-chatgpt.optimize",
+          "command": "chatgpt.optimize",
           "group": "chatGpt@3",
           "when": "editorHasSelection"
         },
         {
-          "command": "vscode-chatgpt.explain",
+          "command": "chatgpt.explain",
           "group": "chatGpt@4",
           "when": "editorHasSelection"
         },
         {
-          "command": "vscode-chatgpt.rewrite",
+          "command": "chatgpt.rewrite",
           "when": "editorHasSelection",
           "group": "chatGpt@3"
         },
         {
-          "command": "vscode-chatgpt.generate",
+          "command": "chatgpt.generate",
           "when": "editorHasSelection",
           "group": "chatGpt@3"
         },
         {
-          "command": "vscode-chatgpt.ask",
+          "command": "chatgpt.ask",
           "when": "editorHasSelection",
           "group": "chatGpt@3"
         }
@@ -85,57 +85,57 @@
     },
     "commands": [
       {
-        "command": "vscode-chatgpt.freeText",
+        "command": "chatgpt.freeText",
         "title": "ChatGPT: Ask anything"
       },
       {
-        "command": "vscode-chatgpt.clearSession",
+        "command": "chatgpt.clearSession",
         "title": "ChatGPT: Clear session"
       },
       {
-        "command": "vscode-chatgpt.refactor",
+        "command": "chatgpt.refactor",
         "title": "ChatGPT: Refactor Code",
         "when": "editorHasSelection"
       },
       {
-        "command": "vscode-chatgpt.generate",
+        "command": "chatgpt.generate",
         "title": "ChatGPT: Generate Code",
         "when": "editorHasSelection"
       },
       {
-        "command": "vscode-chatgpt.addTests",
+        "command": "chatgpt.addTests",
         "title": "ChatGPT: Add Tests",
         "enablement": "editorHasSelection"
       },
       {
-        "command": "vscode-chatgpt.findProblems",
+        "command": "chatgpt.findProblems",
         "title": "ChatGPT: Find Bugs",
         "enablement": "editorHasSelection"
       },
       {
-        "command": "vscode-chatgpt.optimize",
+        "command": "chatgpt.optimize",
         "title": "ChatGPT: Optimize Code",
         "enablement": "editorHasSelection"
       },
       {
-        "command": "vscode-chatgpt.explain",
+        "command": "chatgpt.explain",
         "title": "ChatGPT: Explain Code",
         "enablement": "editorHasSelection"
       },
       {
-        "command": "vscode-chatgpt.clearConversation",
+        "command": "chatgpt.clearConversation",
         "title": "ChatGPT: Clear Conversation"
       },
       {
-        "command": "vscode-chatgpt.exportConversation",
+        "command": "chatgpt.exportConversation",
         "title": "ChatGPT: Export Conversation"
       },
       {
-        "command": "vscode-chatgpt.rewrite",
+        "command": "chatgpt.rewrite",
         "title": "ChatGPT: Rewrite"
       },
       {
-        "command": "vscode-chatgpt.ask",
+        "command": "chatgpt.ask",
         "title": "ChatGPT: Ask",
         "when": "editorHasSelection"
       }
@@ -143,17 +143,17 @@
     "viewsContainers": {
       "activitybar": [
         {
-          "id": "vscode-chatgpt-view-container",
+          "id": "chatgpt-view-container",
           "title": "ChatGPT",
           "icon": "images/openai-transparent.png"
         }
       ]
     },
     "views": {
-      "vscode-chatgpt-view-container": [
+      "chatgpt-view-container": [
         {
           "type": "webview",
-          "id": "vscode-chatgpt.view",
+          "id": "chatgpt.view",
           "name": "Conversation window"
         }
       ]

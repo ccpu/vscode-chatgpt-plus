@@ -46,7 +46,7 @@
 
         switch (message.type) {
             case "addQuestion":
-                const html = message.code != null
+                const html = message.code !== null
                     ? marked.parse(message.value + "\r\n\n\n```\n" + message.code + "\n```")
                     : message.value;
 
@@ -81,7 +81,7 @@
                 preCodeList.forEach((preCode, index) => {
                     preCode.parentElement.classList.add("pre-code-element", "relative");
 
-                    if (index != preCodeList.length - 1) {
+                    if (index !== preCodeList.length - 1) {
                         preCode.parentElement.classList.add("mb-8");
                     }
 
@@ -157,11 +157,6 @@
             });
 
             input.value = "";
-        } else {
-            vscode.postMessage({
-                type: "addFreeTextQuestion",
-                value: 'Hello World HTML',
-            });
         }
     };
 

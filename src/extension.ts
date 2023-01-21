@@ -8,7 +8,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
 
 	const view = vscode.window.registerWebviewViewProvider(
-		"vscode-chatgpt.view",
+		"chatgpt.view",
 		provider,
 		{
 			webviewOptions: {
@@ -17,7 +17,7 @@ export async function activate(context: vscode.ExtensionContext) {
 		}
 	);
 
-	const freeText = vscode.commands.registerCommand("vscode-chatgpt.freeText", async () => {
+	const freeText = vscode.commands.registerCommand("chatgpt.freeText", async () => {
 		const value = await vscode.window.showInputBox({
 			prompt: "Ask anything...",
 		});
@@ -27,29 +27,29 @@ export async function activate(context: vscode.ExtensionContext) {
 		}
 	});
 
-	const resetThread = vscode.commands.registerCommand("vscode-chatgpt.clearConversation", async () => {
+	const resetThread = vscode.commands.registerCommand("chatgpt.clearConversation", async () => {
 		provider?.sendMessage({ type: 'clearConversation' }, true);
 	});
 
-	const exportConversation = vscode.commands.registerCommand("vscode-chatgpt.exportConversation", async () => {
+	const exportConversation = vscode.commands.registerCommand("chatgpt.exportConversation", async () => {
 		provider?.sendMessage({ type: 'exportConversation' }, true);
 	});
 
-	const clear = vscode.commands.registerCommand("vscode-chatgpt.clearSession", () => {
+	const clear = vscode.commands.registerCommand("chatgpt.clearSession", () => {
 		context.globalState.update("chatgpt-session-token", null);
 	});
 
 
 
 	const commands = [
-		["vscode-chatgpt.addTests", "promptPrefix.addTests"],
-		["vscode-chatgpt.findProblems", "promptPrefix.findProblems"],
-		["vscode-chatgpt.refactor", "promptPrefix.refactor"],
-		["vscode-chatgpt.optimize", "promptPrefix.optimize"],
-		["vscode-chatgpt.explain", "promptPrefix.explain"],
-		["vscode-chatgpt.rewrite", "promptPrefix.rewrite"],
-		["vscode-chatgpt.generate", "promptPrefix.generate"],
-		["vscode-chatgpt.ask", "promptPrefix.ask"],
+		["chatgpt.addTests", "promptPrefix.addTests"],
+		["chatgpt.findProblems", "promptPrefix.findProblems"],
+		["chatgpt.refactor", "promptPrefix.refactor"],
+		["chatgpt.optimize", "promptPrefix.optimize"],
+		["chatgpt.explain", "promptPrefix.explain"],
+		["chatgpt.rewrite", "promptPrefix.rewrite"],
+		["chatgpt.generate", "promptPrefix.generate"],
+		["chatgpt.ask", "promptPrefix.ask"],
 	];
 
 	const registeredCommands = commands.map(([command, configKey]) =>
@@ -65,7 +65,7 @@ export async function activate(context: vscode.ExtensionContext) {
 			console.log(fileType, command);
 
 
-			if (command === 'vscode-chatgpt.generate') {
+			if (command === 'chatgpt.generate') {
 				commandPrefix += `(${editor.document.languageId})`;
 			}
 
