@@ -1,10 +1,8 @@
 import { Configuration, OpenAIApi } from 'openai-fork';
 import * as vscode from 'vscode';
 import { getConfigs } from "./config";
+import { htmlEncode } from "./utils";
 
-function htmlEntities(str: string) {
-	return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-}
 
 export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
 	private webView?: vscode.WebviewView;
@@ -137,7 +135,7 @@ export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
 		}
 
 		this.sendMessage({
-			type: 'addResponse', value: `<pre ><code style='white-space: break-spaces;'>${htmlEntities(response)}</code></pre>`//
+			type: 'addResponse', value: `<pre ><code style='white-space: break-spaces;'>${htmlEncode(response)}</code></pre>`//
 		});
 	}
 
