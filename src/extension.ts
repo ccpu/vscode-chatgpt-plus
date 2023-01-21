@@ -1,6 +1,5 @@
 import * as vscode from "vscode";
 import ChatGptViewProvider from './chatgpt-view-provider';
-import { getFileType } from "./utils";
 
 export async function activate(context: vscode.ExtensionContext) {
 	const chatGptExtensionConfig = vscode.workspace.getConfiguration("chatgpt");
@@ -59,11 +58,6 @@ export async function activate(context: vscode.ExtensionContext) {
 			if (!editor) {
 				return;
 			}
-
-			const fileType = getFileType(editor.document.fileName);
-
-			console.log(fileType, command);
-
 
 			if (command === 'chatgpt.generate') {
 				commandPrefix += `(${editor.document.languageId})`;

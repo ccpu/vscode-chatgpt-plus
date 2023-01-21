@@ -46,7 +46,7 @@ pre {
 code {
     font-family: var(--vscode-editor-font-family) !important;
     color: inherit;
-    margin-top: -30px;
+    margin-top: -10px;
 }
 
 button {
@@ -192,7 +192,7 @@ textarea::placeholder {
 }
 
 .pre-code-element .code-actions-wrapper {
-    margin-top: -18px;
+    margin-top: -38px;
 }
 
 .pre-code-element .code-actions-wrapper,

@@ -8,9 +8,9 @@ export const getConfig = (confName: string) => {
 
 
 export const getConfigs = () => {
-
+    const apiKey = getConfig('apiKey');
     return {
-        apiKey: getConfig('apiKey'),
+        apiKey,
         maxTokens: getConfig('maxTokens') as unknown as number,
         model: getConfig('model')!
     };

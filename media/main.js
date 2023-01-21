@@ -46,7 +46,7 @@
 
         switch (message.type) {
             case "addQuestion":
-                const html = message.code !== null
+                const html = message.code
                     ? marked.parse(message.value + "\r\n\n\n```\n" + message.code + "\n```")
                     : message.value;
 
@@ -130,7 +130,7 @@
                 list.innerHTML +=
                     `<div class="p-4 self-end mt-2 pb-4 error-element-gnc">
                         <h2 class="font-bold mb-5 flex">${aiSvg}ChatGPT</h2>
-                        <div class="text-red-400">${marked.parse("An error occurred. If this issue persists please clear your session token with `ChatGPT: Clear session` command and/or restart your Visual Studio Code. If you still experience issues, it may be due to outage on https://openai.com services.")}</div>
+                        <div class="text-red-400">${marked.parse("An error occurred. Try to restart your Visual Studio Code. If you still experience issues, it may be due to outage on https://openai.com services.")}</div>
                     </div>`;
 
                 document.getElementById("in-progress")?.classList?.add("hidden");
@@ -185,7 +185,7 @@
     };
 
     document.getElementById('question-input').addEventListener("keydown", function (event) {
-        if (event.key == "Enter" && !event.shiftKey) {
+        if (event.key === "Enter" && !event.shiftKey) {
             event.preventDefault();
             addFreeTextQuestion();
         }

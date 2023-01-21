@@ -16,6 +16,8 @@ export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
 	 */
 	private leftOverMessage?: any;
 
+	private apiKey: string = '';
+
 	constructor(private context: vscode.ExtensionContext) {
 
 	}
@@ -69,7 +71,14 @@ export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
 	}
 
 	private prepareConversation(reset?: boolean): boolean {
-		if (reset || !this.openai) {
+		const apiKey = getConfigs().apiKey;
+		if (!apiKey) {
+			vscode.window.showErrorMessage("Make sure to add the ChatGPT API key in your vscode settings, as it has not been provided.");
+			return false;
+		}
+
+		if (reset || !this.openai || this.apiKey !== apiKey) {
+			this.apiKey = apiKey;
 			try {
 				const configuration = new Configuration({
 					apiKey: getConfigs().apiKey,
@@ -97,13 +106,13 @@ export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
 		let response: string;
 		let question = prompt;
 
-		if (code !== null) {
+		if (code && prompt) {
 			// Add prompt prefix to the code if there was a code block selected
 			question = `${prompt}: ${code}`;
 		}
 
 		// If the ChatGPT view is not in focus/visible; focus on it to render Q&A
-		if (this.webView === null) {
+		if (!this.webView) {
 			await vscode.commands.executeCommand('chatgpt.view.focus');
 		} else {
 			this.webView?.show?.(true);
