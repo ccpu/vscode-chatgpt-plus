@@ -44,11 +44,16 @@
         {
           "command": "chatgptplus.refactor",
           "when": "editorHasSelection",
-          "group": "chatGpt@3"
+          "group": "chatGpt@7"
+        },
+        {
+          "command": "chatgptplus.comment",
+          "when": "editorHasSelection",
+          "group": "chatGpt@4"
         },
         {
           "command": "chatgptplus.addTests",
-          "group": "chatGpt@1",
+          "group": "chatGpt@5",
           "when": "editorHasSelection"
         },
         {
@@ -58,18 +63,18 @@
         },
         {
           "command": "chatgptplus.optimize",
-          "group": "chatGpt@3",
+          "group": "chatGpt@6",
           "when": "editorHasSelection"
         },
         {
           "command": "chatgptplus.explain",
-          "group": "chatGpt@4",
+          "group": "chatGpt@1",
           "when": "editorHasSelection"
         },
         {
           "command": "chatgptplus.rewrite",
           "when": "editorHasSelection",
-          "group": "chatGpt@3"
+          "group": "chatGpt@8"
         },
         {
           "command": "chatgptplus.generate",
@@ -77,24 +82,25 @@
           "group": "chatGpt@3"
         },
         {
-          "command": "chatgptplus.ask",
+          "command": "chatgptplus.send",
           "when": "editorHasSelection",
-          "group": "chatGpt@3"
+          "group": "chatGpt@9"
         }
       ]
     },
     "commands": [
       {
         "command": "chatgptplus.freeText",
-        "title": "ChatGPT: Ask anything"
-      },
-      {
-        "command": "chatgptplus.clearSession",
-        "title": "ChatGPT: Clear session"
+        "title": "ChatGPT: Ask Anything"
       },
       {
         "command": "chatgptplus.refactor",
         "title": "ChatGPT: Refactor Code",
+        "when": "editorHasSelection"
+      },
+      {
+        "command": "chatgptplus.comment",
+        "title": "ChatGPT: Generate Comment",
         "when": "editorHasSelection"
       },
       {
@@ -104,7 +110,7 @@
       },
       {
         "command": "chatgptplus.addTests",
-        "title": "ChatGPT: Add Tests",
+        "title": "ChatGPT: Generate Tests",
         "enablement": "editorHasSelection"
       },
       {
@@ -132,11 +138,11 @@
       },
       {
         "command": "chatgptplus.rewrite",
-        "title": "ChatGPT: Rewrite"
+        "title": "ChatGPT: Rewrite Selection"
       },
       {
-        "command": "chatgptplus.ask",
-        "title": "ChatGPT: Ask",
+        "command": "chatgptplus.send",
+        "title": "ChatGPT: Send Selection",
         "when": "editorHasSelection"
       }
     ],
@@ -145,7 +151,7 @@
         {
           "id": "chatgpt-view-container",
           "title": "Chatgpt Plus",
-          "icon": "images/openai-transparent.png"
+          "icon": "images/icon.png"
         }
       ]
     },
@@ -162,62 +168,68 @@
       "title": "ChatGPT",
       "properties": {
         "chatgptplus.apiKey": {
-          "type": "string",
-          "description": "A session token you get when logged into chat.openai.com",
-          "order": 1
+          "description": "Openai api key to communicate with chatgpt api",
+          "order": 1,
+          "type": "string"
         },
-        "chatgptplus.promptPrefix.refactor": {
-          "type": "string",
-          "default": "Refactor this code and explain what's changed: ",
-          "description": "The prompt prefix used for refactoring the selected code"
+        "chatgptplus.maxTokens": {
+          "default": 1000,
+          "description": "The maximum number of [tokens](/tokenizer) to generate in the completion.  The token count of your prompt plus `max_tokens` cannot exceed the model's context length. Most models have a context length of 2048 tokens (except for the newest models, which support 4096).",
+          "type": "number"
+        },
+        "chatgptplus.model": {
+          "default": "text-davinci-003",
+          "description": "ID of the model to use. You can use the [List models](/docs/api-reference/models/list) API to see all of your available models, or see our [Model overview](/docs/models/overview) for descriptions of them.",
+          "type": "string"
+        },
+        "chatgptplus.promptPrefix.addTests": {
+          "default": "Implement tests for the following code:",
+          "description": "The prompt prefix used for adding tests for the selected code",
+          "type": "string"
+        },
+        "chatgptplus.promptPrefix.send": {
+          "description": "Sends the selected text/code to ChatGPT for a response.",
+          "type": "string"
+        },
+        "chatgptplus.promptPrefix.comment": {
+          "default": "Generate short comment for the following code: ",
+          "description": "The prompt prefix used to generate comment for selected code.",
+          "type": "string"
+        },
+        "chatgptplus.promptPrefix.explain": {
+          "default": "Explain the following code: ",
+          "description": "The prompt prefix used for explaining the selected code",
+          "type": "string"
+        },
+        "chatgptplus.promptPrefix.findProblems": {
+          "default": "Find problems with the following code: ",
+          "description": "The prompt prefix used for finding problems for the selected code",
+          "type": "string"
         },
         "chatgptplus.promptPrefix.generate": {
-          "type": "string",
           "default": "Generate code base on following texts: ",
-          "description": "The prompt prefix used generate code base on texts"
+          "description": "The prompt prefix used generate code base on texts",
+          "type": "string"
         },
-        "chatgptplus.promptPrefix.ask": {
+        "chatgptplus.promptPrefix.optimize": {
+          "default": "Optimize the following code: ",
+          "description": "The prompt prefix used for optimizing the selected code",
+          "type": "string"
+        },
+        "chatgptplus.promptPrefix.refactor": {
+          "default": "Refactor this code and explain what's changed: ",
+          "description": "The prompt prefix used for refactoring the selected code",
           "type": "string"
         },
         "chatgptplus.promptPrefix.rewrite": {
-          "type": "string",
           "default": "Rewrite this sentences: ",
-          "description": "Will try to rewrite sentences."
-        },
-        "chatgptplus.promptPrefix.addTests": {
-          "type": "string",
-          "default": "Implement tests for the following code:",
-          "description": "The prompt prefix used for adding tests for the selected code"
-        },
-        "chatgptplus.promptPrefix.findProblems": {
-          "type": "string",
-          "default": "Find problems with the following code: ",
-          "description": "The prompt prefix used for finding problems for the selected code"
-        },
-        "chatgptplus.promptPrefix.optimize": {
-          "type": "string",
-          "default": "Optimize the following code: ",
-          "description": "The prompt prefix used for optimizing the selected code"
-        },
-        "chatgptplus.promptPrefix.explain": {
-          "type": "string",
-          "default": "Explain the following code: ",
-          "description": "The prompt prefix used for explaining the selected code"
+          "description": "Will try to rewrite sentences.",
+          "type": "string"
         },
         "chatgptplus.response.showNotification": {
-          "type": "boolean",
           "default": false,
-          "description": "Choose whether you'd like to receive a notification when ChatGPT bot responds to your query."
-        },
-        "chatgptplus.maxTokens": {
-          "type": "number",
-          "default": 1000,
-          "description": "The maximum number of [tokens](/tokenizer) to generate in the completion.  The token count of your prompt plus `max_tokens` cannot exceed the model's context length. Most models have a context length of 2048 tokens (except for the newest models, which support 4096)."
-        },
-        "chatgptplus.model": {
-          "type": "string",
-          "default": "text-davinci-003",
-          "description": "ID of the model to use. You can use the [List models](/docs/api-reference/models/list) API to see all of your available models, or see our [Model overview](/docs/models/overview) for descriptions of them."
+          "description": "Choose whether you'd like to receive a notification when ChatGPT bot responds to your query.",
+          "type": "boolean"
         }
       }
     }

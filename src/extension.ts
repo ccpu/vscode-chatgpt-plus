@@ -48,7 +48,8 @@ export async function activate(context: vscode.ExtensionContext) {
 		["chatgptplus.explain", "promptPrefix.explain"],
 		["chatgptplus.rewrite", "promptPrefix.rewrite"],
 		["chatgptplus.generate", "promptPrefix.generate"],
-		["chatgptplus.ask", "promptPrefix.ask"],
+		["chatgptplus.send", "promptPrefix.send"],
+		["chatgptplus.comment", "promptPrefix.comment"],
 	];
 
 	const registeredCommands = commands.map(([command, configKey]) =>
