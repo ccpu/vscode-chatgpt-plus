@@ -34,6 +34,7 @@
         "editor.defaultFormatter": "vscode.css-language-features"
     },
     "cSpell.words": [
+        "chatgpt",
         "openai"
     ],
 }

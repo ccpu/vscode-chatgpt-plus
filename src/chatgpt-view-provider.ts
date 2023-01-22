@@ -111,7 +111,7 @@ export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
 
 		// If the ChatGPT view is not in focus/visible; focus on it to render Q&A
 		if (!this.webView) {
-			await vscode.commands.executeCommand('chatgpt.view.focus');
+			await vscode.commands.executeCommand('vscode-chatgpt.view.focus');
 		} else {
 			this.webView?.show?.(true);
 		}
@@ -119,10 +119,11 @@ export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
 		this.sendMessage({ type: 'addQuestion', value: prompt, code });
 
 		try {
+			const conf = getConfigs();
 			const completion = await this.openai.createCompletion({
-				model: getConfigs().model,
+				model: conf.model,
 				prompt: question,
-				max_tokens: getConfigs().maxTokens,
+				max_tokens: conf.maxTokens,
 
 			});
 
