@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
 
 export const getConfig = (confName: string) => {
-    const config = vscode.workspace.getConfiguration("chatgpt");
+    const config = vscode.workspace.getConfiguration("chatgptplus");
     return config.get(confName) as string | undefined;
 };
 

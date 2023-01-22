@@ -1,11 +1,11 @@
-<h2 align="center"><img src="https://raw.githubusercontent.com/gencay/vscode-chatgpt/main/images/iconWhite.png" height="64"><br>Ask ChatGPT</h2>
+<h2 align="center"><img src="https://raw.githubusercontent.com/gencay/chatgptplus/main/images/iconWhite.png" height="64"><br>Ask ChatGPT</h2>
 <p align="center"><strong>ChatGPT, GPT-3 and Codex conversations in Visual Studio Code</strong></p>
 
 <div align="center">
 
-[![Badge for version](https://img.shields.io/visual-studio-marketplace/v/gencay.vscode-chatgpt?color=orange&label=VS%20Code%20Marketplace)](https://marketplace.visualstudio.com/items?itemName=gencay.vscode-chatgpt)
-[![Badge for download count](https://img.shields.io/visual-studio-marketplace/d/gencay.vscode-chatgpt?color=blueviolet&label=Downloads)](https://marketplace.visualstudio.com/items?itemName=gencay.vscode-chatgpt)
-[![Github stars](https://img.shields.io/github/stars/gencay/vscode-chatgpt?color=blue&label=Github%20Stars)](https://github.com/gencay/vscode-chatgpt)
+[![Badge for version](https://img.shields.io/visual-studio-marketplace/v/gencay.chatgptplus?color=orange&label=VS%20Code%20Marketplace)](https://marketplace.visualstudio.com/items?itemName=gencay.chatgptplus)
+[![Badge for download count](https://img.shields.io/visual-studio-marketplace/d/gencay.chatgptplus?color=blueviolet&label=Downloads)](https://marketplace.visualstudio.com/items?itemName=gencay.chatgptplus)
+[![Github stars](https://img.shields.io/github/stars/gencay/chatgptplus?color=blue&label=Github%20Stars)](https://github.com/gencay/chatgptplus)
 
 </div>
 
@@ -23,7 +23,7 @@ If you opt-in to use this method, make sure you are aware of the limitations set
 - 🤖 Zero-Config setup. Simply login to OpenAI as usual. Or use OpenAI's official GPT3 APIs.
 - ➡️ Export all your conversation history at once in Markdown format.
 
-<img src="https://raw.githubusercontent.com/gencay/vscode-chatgpt/main/images/chatgpt-gif.gif">
+<img src="https://raw.githubusercontent.com/gencay/chatgptplus/main/images/chatgpt-gif.gif">
 
 # Zero Configuration with Browser Auto Login
 
@@ -33,7 +33,7 @@ If you opt-in to use this method, make sure you are aware of the limitations set
 2. Use OpenAI's official GPT3 APIs - Use your personal/organizational API Keys. This method provides many parameters to customize your prompt. Check out the GPT3 settings. For more details: [GPT3 OpenAI API Key](#gpt3)
 3. [Not recommended due to throttling] Manually login on a browser and grab required tokens. Described in [Manual Setup](#manual-setup). This option has problems due to using unofficial OpenAI API usage and rate-limiting.
 
-<img src="https://raw.githubusercontent.com/gencay/vscode-chatgpt/main/images/methods.png">
+<img src="https://raw.githubusercontent.com/gencay/chatgptplus/main/images/methods.png">
 
 # Setup
 
@@ -57,7 +57,7 @@ If you opt-in to use this method, make sure you are aware of the limitations set
 
 🤖 Below is a sample autologin flow. Simply login & keep your browser minimized for dialogues with ChatGPT:
 
-<img src="https://raw.githubusercontent.com/gencay/vscode-chatgpt/main/images/chatgpt-autologin.gif">
+<img src="https://raw.githubusercontent.com/gencay/chatgptplus/main/images/chatgpt-autologin.gif">
 
 ---
 
@@ -73,8 +73,8 @@ There are community members who are able to run the extension in WSL, Linux, rem
 
 Credits to [@EzyDark](https://github.com/EzYDark)
 
-- [How to get it work in remote workspace (Remote - SSH) #39](https://github.com/gencay/vscode-chatgpt/issues/39#issuecomment-1370272656)
-- [How to get it work under WSL2 #25](https://github.com/gencay/vscode-chatgpt/issues/25#issuecomment-1374833026)
+- [How to get it work in remote workspace (Remote - SSH) #39](https://github.com/gencay/chatgptplus/issues/39#issuecomment-1370272656)
+- [How to get it work under WSL2 #25](https://github.com/gencay/chatgptplus/issues/25#issuecomment-1374833026)
 
 ## GPT3
 
@@ -86,7 +86,7 @@ If you prefer using OpenAI's official APIs to communicate, switch your method se
 2. Once asked provide your API Key to the extension
    - [Optional] You could also store your API Key in your settings.json. However, it's highly discouraged due to security reasons.
 
-<img src="https://raw.githubusercontent.com/gencay/vscode-chatgpt/main/images/api-key.png">
+<img src="https://raw.githubusercontent.com/gencay/chatgptplus/main/images/api-key.png">
 
 # Features
 
@@ -96,7 +96,7 @@ The extension comes with context menu commands, copy/move suggested code into ed
 
 ### 🆕 Export all your conversation history withs one click
 
-<img src="https://raw.githubusercontent.com/gencay/vscode-chatgpt/main/images/export-convo.png">
+<img src="https://raw.githubusercontent.com/gencay/chatgptplus/main/images/export-convo.png">
 
 ---
 
@@ -104,7 +104,7 @@ The extension comes with context menu commands, copy/move suggested code into ed
 
 Customize what you are asking with the selected code. The extension will remember your prompt for subsequent questions.
 
-<img src="https://raw.githubusercontent.com/gencay/vscode-chatgpt/main/images/adhoc.png">
+<img src="https://raw.githubusercontent.com/gencay/chatgptplus/main/images/adhoc.png">
 
 ---
 
@@ -112,31 +112,31 @@ Customize what you are asking with the selected code. The extension will remembe
 
 The extension will detect if ChatGPT didn't complete code in their answer and it will suggest automatic continuation and combination of answers
 
-<img src="https://raw.githubusercontent.com/gencay/vscode-chatgpt/main/images/continue-combine.png">
+<img src="https://raw.githubusercontent.com/gencay/chatgptplus/main/images/continue-combine.png">
 
 ---
 
 ### 🍻 Optimized for dialogue
 
-<img src="https://raw.githubusercontent.com/gencay/vscode-chatgpt/main/images/conversation-mode-2.png">
+<img src="https://raw.githubusercontent.com/gencay/chatgptplus/main/images/conversation-mode-2.png">
 
 ---
 
 ### Edit and resend a previous prompt
 
-<img src="https://raw.githubusercontent.com/gencay/vscode-chatgpt/main/images/edit-resend.png">
+<img src="https://raw.githubusercontent.com/gencay/chatgptplus/main/images/edit-resend.png">
 
 ---
 
 ### Copy or insert the code ChatGPT is suggesting right into your editor.
 
-<img src="https://raw.githubusercontent.com/gencay/vscode-chatgpt/main/images/code-actions.png">
+<img src="https://raw.githubusercontent.com/gencay/chatgptplus/main/images/code-actions.png">
 
 ---
 
 ### Ask free-form text questions that will be listed in the conversation window. The conversation is kept in cache until vs-code instance is closed.
 
-<img src="https://raw.githubusercontent.com/gencay/vscode-chatgpt/main/images/rust.png">
+<img src="https://raw.githubusercontent.com/gencay/chatgptplus/main/images/rust.png">
 
 # Use defaults or customize your code prompts
 

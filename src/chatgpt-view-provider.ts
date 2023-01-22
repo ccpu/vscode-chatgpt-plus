@@ -111,7 +111,7 @@ export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
 
 		// If the ChatGPT view is not in focus/visible; focus on it to render Q&A
 		if (!this.webView) {
-			await vscode.commands.executeCommand('vscode-chatgpt.view.focus');
+			await vscode.commands.executeCommand('chatgptplus.view.focus');
 		} else {
 			this.webView?.show?.(true);
 		}

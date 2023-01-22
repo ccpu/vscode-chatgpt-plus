@@ -1,6 +1,6 @@
 # Change Log
 
-All notable changes to the "vscode-chatgpt" extension will be documented in this file.
+All notable changes to the "chatgptplus" extension will be documented in this file.
 
 ## [3.2.0] - 2022-01-15
 

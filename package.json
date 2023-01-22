@@ -1,5 +1,5 @@
 {
-  "name": "vscode-openai",
+  "name": "chatgptplus",
   "publisher": "molab",
   "displayName": "ChatGPT - Copilot to improve your code, add tests & find bugs",
   "icon": "images/ai-logo.jpg",
@@ -27,57 +27,57 @@
     "ai"
   ],
   "activationEvents": [
-    "onView:vscode-chatgpt.view",
-    "onCommand:vscode-chatgpt.clearSession",
-    "onCommand:vscode-chatgpt.freeText",
-    "onCommand:vscode-chatgpt.addTests",
-    "onCommand:vscode-chatgpt.findProblems",
-    "onCommand:vscode-chatgpt.optimize",
-    "onCommand:vscode-chatgpt.explain",
-    "onCommand:vscode-chatgpt.clearConversation",
-    "onCommand:vscode-chatgpt.exportConversation"
+    "onView:chatgptplus.view",
+    "onCommand:chatgptplus.clearSession",
+    "onCommand:chatgptplus.freeText",
+    "onCommand:chatgptplus.addTests",
+    "onCommand:chatgptplus.findProblems",
+    "onCommand:chatgptplus.optimize",
+    "onCommand:chatgptplus.explain",
+    "onCommand:chatgptplus.clearConversation",
+    "onCommand:chatgptplus.exportConversation"
   ],
   "main": "./out/extension.js",
   "contributes": {
     "menus": {
       "editor/context": [
         {
-          "command": "vscode-chatgpt.refactor",
+          "command": "chatgptplus.refactor",
           "when": "editorHasSelection",
           "group": "chatGpt@3"
         },
         {
-          "command": "vscode-chatgpt.addTests",
+          "command": "chatgptplus.addTests",
           "group": "chatGpt@1",
           "when": "editorHasSelection"
         },
         {
-          "command": "vscode-chatgpt.findProblems",
+          "command": "chatgptplus.findProblems",
           "group": "chatGpt@2",
           "when": "editorHasSelection"
         },
         {
-          "command": "vscode-chatgpt.optimize",
+          "command": "chatgptplus.optimize",
           "group": "chatGpt@3",
           "when": "editorHasSelection"
         },
         {
-          "command": "vscode-chatgpt.explain",
+          "command": "chatgptplus.explain",
           "group": "chatGpt@4",
           "when": "editorHasSelection"
         },
         {
-          "command": "vscode-chatgpt.rewrite",
+          "command": "chatgptplus.rewrite",
           "when": "editorHasSelection",
           "group": "chatGpt@3"
         },
         {
-          "command": "vscode-chatgpt.generate",
+          "command": "chatgptplus.generate",
           "when": "editorHasSelection",
           "group": "chatGpt@3"
         },
         {
-          "command": "vscode-chatgpt.ask",
+          "command": "chatgptplus.ask",
           "when": "editorHasSelection",
           "group": "chatGpt@3"
         }
@@ -85,57 +85,57 @@
     },
     "commands": [
       {
-        "command": "vscode-chatgpt.freeText",
+        "command": "chatgptplus.freeText",
         "title": "ChatGPT: Ask anything"
       },
       {
-        "command": "vscode-chatgpt.clearSession",
+        "command": "chatgptplus.clearSession",
         "title": "ChatGPT: Clear session"
       },
       {
-        "command": "vscode-chatgpt.refactor",
+        "command": "chatgptplus.refactor",
         "title": "ChatGPT: Refactor Code",
         "when": "editorHasSelection"
       },
       {
-        "command": "vscode-chatgpt.generate",
+        "command": "chatgptplus.generate",
         "title": "ChatGPT: Generate Code",
         "when": "editorHasSelection"
       },
       {
-        "command": "vscode-chatgpt.addTests",
+        "command": "chatgptplus.addTests",
         "title": "ChatGPT: Add Tests",
         "enablement": "editorHasSelection"
       },
       {
-        "command": "vscode-chatgpt.findProblems",
+        "command": "chatgptplus.findProblems",
         "title": "ChatGPT: Find Bugs",
         "enablement": "editorHasSelection"
       },
       {
-        "command": "vscode-chatgpt.optimize",
+        "command": "chatgptplus.optimize",
         "title": "ChatGPT: Optimize Code",
         "enablement": "editorHasSelection"
       },
       {
-        "command": "vscode-chatgpt.explain",
+        "command": "chatgptplus.explain",
         "title": "ChatGPT: Explain Code",
         "enablement": "editorHasSelection"
       },
       {
-        "command": "vscode-chatgpt.clearConversation",
+        "command": "chatgptplus.clearConversation",
         "title": "ChatGPT: Clear Conversation"
       },
       {
-        "command": "vscode-chatgpt.exportConversation",
+        "command": "chatgptplus.exportConversation",
         "title": "ChatGPT: Export Conversation"
       },
       {
-        "command": "vscode-chatgpt.rewrite",
+        "command": "chatgptplus.rewrite",
         "title": "ChatGPT: Rewrite"
       },
       {
-        "command": "vscode-chatgpt.ask",
+        "command": "chatgptplus.ask",
         "title": "ChatGPT: Ask",
         "when": "editorHasSelection"
       }
@@ -144,7 +144,7 @@
       "activitybar": [
         {
           "id": "chatgpt-view-container",
-          "title": "ChatGPT",
+          "title": "Chatgpt Plus",
           "icon": "images/openai-transparent.png"
         }
       ]
@@ -153,7 +153,7 @@
       "chatgpt-view-container": [
         {
           "type": "webview",
-          "id": "vscode-chatgpt.view",
+          "id": "chatgptplus.view",
           "name": "Conversation window"
         }
       ]
@@ -161,60 +161,60 @@
     "configuration": {
       "title": "ChatGPT",
       "properties": {
-        "chatgpt.apiKey": {
+        "chatgptplus.apiKey": {
           "type": "string",
           "description": "A session token you get when logged into chat.openai.com",
           "order": 1
         },
-        "chatgpt.promptPrefix.refactor": {
+        "chatgptplus.promptPrefix.refactor": {
           "type": "string",
           "default": "Refactor this code and explain what's changed: ",
           "description": "The prompt prefix used for refactoring the selected code"
         },
-        "chatgpt.promptPrefix.generate": {
+        "chatgptplus.promptPrefix.generate": {
           "type": "string",
           "default": "Generate code base on following texts: ",
           "description": "The prompt prefix used generate code base on texts"
         },
-        "chatgpt.promptPrefix.ask": {
+        "chatgptplus.promptPrefix.ask": {
           "type": "string"
         },
-        "chatgpt.promptPrefix.rewrite": {
+        "chatgptplus.promptPrefix.rewrite": {
           "type": "string",
           "default": "Rewrite this sentences: ",
           "description": "Will try to rewrite sentences."
         },
-        "chatgpt.promptPrefix.addTests": {
+        "chatgptplus.promptPrefix.addTests": {
           "type": "string",
           "default": "Implement tests for the following code:",
           "description": "The prompt prefix used for adding tests for the selected code"
         },
-        "chatgpt.promptPrefix.findProblems": {
+        "chatgptplus.promptPrefix.findProblems": {
           "type": "string",
           "default": "Find problems with the following code: ",
           "description": "The prompt prefix used for finding problems for the selected code"
         },
-        "chatgpt.promptPrefix.optimize": {
+        "chatgptplus.promptPrefix.optimize": {
           "type": "string",
           "default": "Optimize the following code: ",
           "description": "The prompt prefix used for optimizing the selected code"
         },
-        "chatgpt.promptPrefix.explain": {
+        "chatgptplus.promptPrefix.explain": {
           "type": "string",
           "default": "Explain the following code: ",
           "description": "The prompt prefix used for explaining the selected code"
         },
-        "chatgpt.response.showNotification": {
+        "chatgptplus.response.showNotification": {
           "type": "boolean",
           "default": false,
           "description": "Choose whether you'd like to receive a notification when ChatGPT bot responds to your query."
         },
-        "chatgpt.maxTokens": {
+        "chatgptplus.maxTokens": {
           "type": "number",
           "default": 1000,
           "description": "The maximum number of [tokens](/tokenizer) to generate in the completion.  The token count of your prompt plus `max_tokens` cannot exceed the model's context length. Most models have a context length of 2048 tokens (except for the newest models, which support 4096)."
         },
-        "chatgpt.model": {
+        "chatgptplus.model": {
           "type": "string",
           "default": "text-davinci-003",
           "description": "ID of the model to use. You can use the [List models](/docs/api-reference/models/list) API to see all of your available models, or see our [Model overview](/docs/models/overview) for descriptions of them."
