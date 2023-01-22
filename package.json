@@ -1,6 +1,6 @@
 {
   "name": "vscode-openai",
-  "publisher": "m.doaie",
+  "publisher": "molab",
   "displayName": "ChatGPT - Copilot to improve your code, add tests & find bugs",
   "icon": "images/ai-logo.jpg",
   "description": "ChatGPT conversation support. Create new files & projects with one click",
