@@ -26,7 +26,7 @@ This extention required an api key, create api key and entered in vscode setting
 
 The extension includes a context menu commands that enables you to send the chosen text or code to the chatGPT service and display the output in the chatGPT panel. This panel allows you to copy or move the code to the current file or create a new file and then move the result there.
 
-## Other available commands
+## Available commands
 
 - ChatGPT: Ask Anything
 - ChatGPT: Refactor Code
