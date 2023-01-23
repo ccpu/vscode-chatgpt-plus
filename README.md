@@ -1,6 +1,6 @@
-<h2 align="center">
+<h1 align="center">
 
-<br>ChatGPT PLUS</h2>
+<br>ChatGPT PLUS</h1>
 
 <p align="center"><strong>Visual Studio Code With ChatGPT, GPT-3 and Codex.</strong></p>
 
