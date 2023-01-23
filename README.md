@@ -26,6 +26,78 @@ This extention required an api key, create api key and entered in vscode setting
 
 The extension includes a context menu commands that enables you to send the chosen text or code to the chatGPT service and display the output in the chatGPT panel. This panel allows you to copy or move the code to the current file or create a new file and then move the result there.
 
+## Other available commands
+
+- ChatGPT: Ask Anything
+- ChatGPT: Refactor Code
+- ChatGPT: Generate Comment
+- ChatGPT: Generate Code
+- ChatGPT: Generate Tests
+- ChatGPT: Find Bugs
+- ChatGPT: Optimize Code
+- ChatGPT: Explain Code
+- ChatGPT: Clear Conversation
+- ChatGPT: Export Conversation
+- ChatGPT: Rewrite Selection
+- ChatGPT: Send Selection
+- ChatGPT: Summarize Selection
+
+---
+
+### Refactor Code
+
+<img src="images\refactor-code.png" alt="Refactor Code" width="800"/>
+
+---
+
+### Generate Comment
+
+<img src="images\generate-comment.png" alt="Generate Comment" width="800"/>
+
+---
+
+### Generate Code
+
+<img src="images\generate-code.png" alt="Generate Code" width="800"/>
+
+---
+
+### Generate Tests
+
+<img src="images\generate-test.png" alt="Generate Tests" width="800"/>
+
+---
+
+### Find Bugs
+
+<img src="images\find-bugs.png" alt="Find Bugs" width="800"/>
+
+---
+
+### Optimize Code
+
+<img src="images\optimize-code.png" alt="Optimize Code" width="800"/>
+
+---
+
+### Explain Code
+
+<img src="images\explain-code.png" alt="Explain Code" width="800"/>
+
+---
+
+### Rewrite Selection
+
+<img src="images\rewrite-selection.png" alt="Rewrite Selection" width="800"/>
+
+---
+
+### Summarize Selection
+
+<img src="images\summarize.png" alt="Summarize Selection" width="800"/>
+
+---
+
 # Customize your code prompts or use defaults
 
 ```json
@@ -84,23 +156,9 @@ The extension includes a context menu commands that enables you to send the chos
   }
 ```
 
-## Other available commands
+# Caveats & Limitations
 
-- ChatGPT: Ask Anything
-- ChatGPT: Refactor Code
-- ChatGPT: Generate Comment
-- ChatGPT: Generate Code
-- ChatGPT: Generate Tests
-- ChatGPT: Find Bugs
-- ChatGPT: Optimize Code
-- ChatGPT: Explain Code
-- ChatGPT: Clear Conversation
-- ChatGPT: Export Conversation
-- ChatGPT: Rewrite Selection
-- ChatGPT: Send Selection
-- ChatGPT: Summarize
-
-### Refactor Code
+Although the conversation panel appears to be having a conversation with ChatGPT, it is not. This extension uses the official OpenAPI library to communicate with the ChatGPT API and this library does not yet provide a conversation API. This means that it will only provide an answer to the current question asked and will not be aware of any preceding conversations.
 
 # Disclaimer
 
