@@ -8,7 +8,7 @@
 
 </div>
 
-# Let ChatGPT be your copilot in order to enhance your developer experience.
+## Let ChatGPT be your copilot in order to enhance your developer experience.
 
 With just one click, you can create files/projects, fix your code, or utilize OpenAI's official GPT3 APIs--all without any configuration! Simply put your API key in the settings, and begin! Exporting all your conversation history at once in Markdown format is also easily done.
 
