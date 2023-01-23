@@ -1,5 +1,6 @@
 import * as vscode from "vscode";
 import ChatGptViewProvider from './chatgpt-view-provider';
+import { getLanguage, isResponseWithCode } from "./utils";
 
 export async function activate(context: vscode.ExtensionContext) {
 	const chatGptExtensionConfig = vscode.workspace.getConfiguration("chatgptplus");
@@ -22,7 +23,7 @@ export async function activate(context: vscode.ExtensionContext) {
 		});
 
 		if (value) {
-			provider?.sendApiRequest(value);
+			provider?.sendApiRequest({ value });
 		}
 	});
 
@@ -50,6 +51,7 @@ export async function activate(context: vscode.ExtensionContext) {
 		["chatgptplus.generate", "promptPrefix.generate"],
 		["chatgptplus.send", "promptPrefix.send"],
 		["chatgptplus.comment", "promptPrefix.comment"],
+		["chatgptplus.summarize", "promptPrefix.summarize"],
 	];
 
 	const registeredCommands = commands.map(([command, configKey]) =>
@@ -60,13 +62,22 @@ export async function activate(context: vscode.ExtensionContext) {
 				return;
 			}
 
-			if (command === 'chatgptplus.generate') {
-				commandPrefix += `(${editor.document.languageId})`;
+			const selection = editor.document.getText(editor.selection);
+
+			const isCode = isResponseWithCode(command);
+
+			if (isCode) {
+				commandPrefix += ` (${getLanguage(selection)})\n`;
 			}
 
-			const selection = editor.document.getText(editor.selection);
 			if (selection) {
-				provider?.sendApiRequest(commandPrefix, selection);
+				provider?.sendApiRequest({
+					value: selection,
+					command,
+					isCode,
+					prompt: commandPrefix
+				});
+
 			}
 		})
 	);

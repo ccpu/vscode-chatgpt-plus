@@ -2,10 +2,16 @@
 (function () {
     const vscode = acquireVsCodeApi();
 
+    let currentLanguage = '';
+
     marked.setOptions({
         renderer: new marked.Renderer(),
         highlight: function (code, _lang) {
-            return hljs.highlightAuto(code).value;
+            if (currentLanguage) {
+                return hljs.highlight(code, { language: 'javascript' }).value;
+            }
+
+            return code;
         },
         langPrefix: 'hljs language-',
         pedantic: false,
@@ -39,20 +45,33 @@
   <path d="M20 12v3a3 3 0 0 1 -3 3h-13m3 3l-3 -3l3 -3" />
 </svg>`;
 
+    const getHtml = (data) => {
+        const html = data.isCode
+            ? marked.parse(data.prompt + "\r\n```\n" + data.value + "\n```")
+            : data.prompt ? data.prompt + '\r\n\n' + data.value : data.value;
+        return html;
+    };
+
     // Handle messages sent from the extension to the webview
     window.addEventListener("message", (event) => {
         const message = event.data;
         const list = document.getElementById("qa-list");
+        currentLanguage = message.language;
 
         switch (message.type) {
             case "addQuestion":
-                const html = message.code
-                    ? marked.parse(message.value + "\r\n\n\n```\n" + message.code + "\n```")
-                    : message.value;
+                const html = getHtml(message);
 
                 list.innerHTML +=
-                    `<div class="p-4 self-end mt-4 question-element-gnc relative" style="background: var(--vscode-input-background)">
+                    `<div class="p-4 pb-0 self-end mt-4 question-element-gnc relative" style="background: var(--vscode-input-background)">
                         <h2 class="font-bold mb-5 flex">${userSvg}You</h2>
+                        <input type="hidden" id="prompt" value="${message.prompt}">
+                        <input type="hidden" id="command" value="${message.command}">
+                        <input type="hidden" id="language"  value="${message.language}">
+                        <pre id="value" style="display:none;">${message.value}</pre>
+                        <pre id="html" style="display:none;">${html}</pre>
+                        <input type="hidden" id="isCode"  value="${message.isCode}">
+
                         <no-export class="mb-2 flex items-center">
                             <div class="resend-actions items-center rounded-lg absolute right-6 code-actions-wrapper flex">
                                 <button title="Edit and resend this prompt" class="resend-element-gnc p-2 flex items-center rounded-lg">${pencilSvg}</button>
@@ -63,7 +82,7 @@
                                 <button title="Cancel" class="cancel-element-gnc p-1 pr-2 flex items-center">${cancelSvg}Cancel</button>
                             </div>
                         </no-export>
-                        <div class="overflow-y-auto">${html}</div>
+                        <div class="overflow-y-auto" style="white-space: break-spaces;" >${html}</div>
                     </div>`;
 
                 document.getElementById("in-progress")?.classList?.remove("hidden");
@@ -75,17 +94,20 @@
                 document.getElementById("in-progress")?.classList?.add("hidden");
                 document.getElementById("chat-button-wrapper")?.classList?.remove("hidden");
 
-                const markedResponse = new DOMParser().parseFromString(marked.parse(message.value), "text/html");
-                const preCodeList = markedResponse.querySelectorAll("pre > code");
+                const value = message.isCode ? "\r\n```\n" + message.value + "\n```" : `<div class="text-wrapper"><div class="text-content">${message.value}</div></div>`;
 
-                preCodeList.forEach((preCode, index) => {
-                    preCode.parentElement.classList.add("pre-code-element", "relative");
+                const markedResponse = new DOMParser().parseFromString(marked.parse(value), "text/html");
 
-                    if (index !== preCodeList.length - 1) {
-                        preCode.parentElement.classList.add("mb-8");
+                const nodeList = message.isCode ? markedResponse.querySelectorAll("pre > code") : markedResponse.querySelectorAll(".text-content");
+
+                nodeList.forEach((node, index) => {
+                    node.parentElement.classList.add("pre-code-element", "relative");
+
+                    if (index !== nodeList.length - 1) {
+                        node.parentElement.classList.add("mb-8");
                     }
 
-                    preCode.classList.add("block", "whitespace-pre", "overflow-x-scroll");
+                    node.classList.add("block", "whitespace-pre", "overflow-x-scroll");
 
                     const buttonWrapper = document.createElement("div");
                     buttonWrapper.classList.add("code-actions-wrapper", "flex", "gap-4", "flex-wrap", "items-center", "right-2", "top-1", "absolute");
@@ -111,7 +133,7 @@
 
                     buttonWrapper.append(copyButton, insert, newTab);
 
-                    preCode.parentElement.prepend(buttonWrapper);
+                    node.parentElement.prepend(buttonWrapper);
                 });
 
                 list.innerHTML +=
@@ -194,6 +216,25 @@
     document.addEventListener("click", (e) => {
         const targetButton = e.target.closest('button');
 
+        const getQuestionData = () => {
+            const question = targetButton.closest(".question-element-gnc");
+            const prompt = question.querySelector('#prompt').value;
+            const language = question.querySelector('#language').value;
+            const isCode = question.querySelector('#isCode').value;
+            const value = question.querySelector('#value').innerHTML;
+            const html = question.querySelector('#html').innerHTML;
+            const command = question.querySelector('#command').value;
+
+            return {
+                prompt,
+                language: language === 'undefined' ? '' : language,
+                isCode: isCode === 'true',
+                value,
+                html,
+                command
+            };
+        };
+
         if (targetButton?.id === "ask-button") {
             e.preventDefault();
             addFreeTextQuestion();
@@ -235,6 +276,7 @@
             return;
         }
 
+
         if (targetButton?.classList?.contains("resend-element-gnc")) {
             e.preventDefault();
             const question = targetButton.closest(".question-element-gnc");
@@ -244,7 +286,12 @@
             const sendActions = question.querySelector('.send-cancel-elements-gnc');
             sendActions.classList.remove("hidden");
 
+            const questionData = getQuestionData();
+
+
             question.lastElementChild?.setAttribute("contenteditable", true);
+
+            question.lastElementChild.innerHTML = questionData.value;
 
             return;
         }
@@ -252,11 +299,13 @@
         if (targetButton?.classList?.contains("retry-element-gnc")) {
             e.preventDefault();
             const question = targetButton.closest(".question-element-gnc");
+            const questionData = getQuestionData();
 
+            console.log(questionData);
             if (question.lastElementChild.textContent?.length > 0) {
                 vscode.postMessage({
                     type: "addFreeTextQuestion",
-                    value: question.lastElementChild.textContent,
+                    ...questionData
                 });
             }
 
@@ -265,7 +314,7 @@
 
         if (targetButton?.classList?.contains("send-element-gnc")) {
             e.preventDefault();
-
+            const qusData = getQuestionData();
             const question = targetButton.closest(".question-element-gnc");
             const elements = targetButton.closest(".send-cancel-elements-gnc");
             const resendElement = targetButton.parentElement.parentElement.firstElementChild;
@@ -273,10 +322,14 @@
             resendElement.classList.remove("hidden");
             question.lastElementChild?.setAttribute("contenteditable", false);
 
-            if (question.lastElementChild.textContent?.length > 0) {
+            const newContent = question.lastElementChild.textContent;
+            question.lastElementChild.innerHTML = getHtml({ ...qusData, value: newContent || qusData.value });
+
+            if (newContent.length > 0) {
                 vscode.postMessage({
                     type: "addFreeTextQuestion",
-                    value: question.lastElementChild.textContent,
+                    ...qusData,
+                    value: newContent
                 });
             }
             return;
@@ -290,6 +343,9 @@
             elements.classList.add("hidden");
             resendElement.classList.remove("hidden");
             question.lastElementChild?.setAttribute("contenteditable", false);
+            const questionData = getQuestionData();
+            question.lastElementChild.innerHTML = questionData.html;
+
             return;
         }
 

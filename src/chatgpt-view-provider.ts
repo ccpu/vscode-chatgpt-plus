@@ -1,7 +1,11 @@
 import { Configuration, OpenAIApi } from 'openai-fork';
 import * as vscode from 'vscode';
 import { getConfigs } from "./config";
-import { htmlEncode } from "./utils";
+import { getLanguage, isQuestionWithCode, isResponseWithCode } from "./utils";
+
+interface RequestData {
+	value: string; prompt?: string; isCode?: boolean; command?: string; language?: string;
+}
 
 
 export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
@@ -38,10 +42,10 @@ export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
 
 		webviewView.webview.html = this.getWebviewHtml(webviewView.webview);
 
-		webviewView.webview.onDidReceiveMessage(async data => {
+		webviewView.webview.onDidReceiveMessage(async (data: RequestData & { type: string; }) => {
 			switch (data.type) {
 				case 'addFreeTextQuestion':
-					this.sendApiRequest(data.value);
+					this.sendApiRequest(data);
 					break;
 				case 'editCode':
 					vscode.window.activeTextEditor?.insertSnippet(new vscode.SnippetString(data.value));
@@ -94,7 +98,9 @@ export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
 		return true;
 	}
 
-	public async sendApiRequest(prompt: string, code?: string) {
+	public async sendApiRequest(data: RequestData) {
+		const { value, command, isCode, prompt } = data;
+
 		this.prepareConversation();
 
 		if (!this.openai) {
@@ -102,11 +108,11 @@ export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
 		}
 
 		let response: string;
-		let question = prompt;
+		let question = value;
 
-		if (code && prompt) {
+		if (prompt) {
 			// Add prompt prefix to the code if there was a code block selected
-			question = `${prompt}: ${code}`;
+			question = `${prompt}:\n ${value}`;
 		}
 
 		// If the ChatGPT view is not in focus/visible; focus on it to render Q&A
@@ -116,7 +122,7 @@ export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
 			this.webView?.show?.(true);
 		}
 
-		this.sendMessage({ type: 'addQuestion', value: prompt, code });
+		this.sendMessage({ type: 'addQuestion', prompt, value, isCode: isQuestionWithCode(command || ''), language: getLanguage(value), command });
 
 		try {
 			const conf = getConfigs();
@@ -127,7 +133,7 @@ export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
 
 			});
 
-			response = completion.data.choices ? completion.data.choices.map((x) => x.text).join('\n') : '';
+			response = completion.data.choices[0] ? completion.data.choices[0].text || '' : '';
 
 		} catch (error: any) {
 			vscode.window.showErrorMessage("An error occurred.", error?.message);
@@ -135,8 +141,10 @@ export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
 			return;
 		}
 
+		const language = getLanguage(response);
+
 		this.sendMessage({
-			type: 'addResponse', value: `<pre ><code style='white-space: break-spaces;'>${htmlEncode(response)}</code></pre>`//
+			type: 'addResponse', value: response, language, prompt, command, isCode: isResponseWithCode(command || '')
 		});
 	}
 
@@ -206,11 +214,11 @@ export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
 					</div>
 
 					<div id="chat-button-wrapper" class="w-full flex gap-4 justify-center items-center mt-2 hidden">
-						<button class="flex gap-2 justify-center items-center rounded-lg p-2" id="clear-button">
+						<button class="flex gap-2 justify-center items-center p-1 pl-3 pr-3" id="clear-button">
 							<svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4" xmlns="http://www.w3.org/2000/svg"><polyline points="1 4 1 10 7 10"></polyline><polyline points="23 20 23 14 17 14"></polyline><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"></path></svg>
 							Clear conversation
 						</button>
-						<button class="flex gap-2 justify-center items-center rounded-lg p-2" id="export-button">
+						<button class="flex gap-2 justify-center items-center p-1 pl-3 pr-3" id="export-button">
 							<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
 								<path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
 							</svg>
