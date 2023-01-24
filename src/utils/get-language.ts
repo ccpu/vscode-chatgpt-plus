@@ -1,14 +1,18 @@
 import * as vscode from 'vscode';
 
 export const getLanguage = (_code: string) => {
-    const editor = vscode.window.activeTextEditor;
-    if (!editor) { return; }
+  const editor = vscode.window.activeTextEditor;
+  if (!editor) {
+    return;
+  }
 
-    let lang = editor.document.languageId;
+  let lang = editor.document.languageId;
 
-    lang = lang.replace('react', '');
+  lang = lang.replace('react', '');
 
-    if (lang === 'html') { return 'xml'; }
+  if (lang === 'html') {
+    return 'xml';
+  }
 
-    return lang;
+  return lang;
 };

@@ -18,11 +18,10 @@
     "typescript.format.semicolons": "insert",
     "javascript.preferences.quoteStyle": "double",
     "[typescript]": {
-        "editor.defaultFormatter": "vscode.typescript-language-features",
-        "typescript.preferences.quoteStyle": "double",
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
     },
     "[javascript]": {
-        "editor.defaultFormatter": "vscode.typescript-language-features"
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
     "[json]": {
         "editor.defaultFormatter": "vscode.json-language-features"

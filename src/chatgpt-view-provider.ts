@@ -1,177 +1,235 @@
 import { Configuration, OpenAIApi } from 'openai-fork';
 import * as vscode from 'vscode';
-import { getConfigs } from "./config";
-import { getLanguage, isQuestionWithCode, isResponseWithCode } from "./utils";
+import { getConfigs } from './config';
+import { getLanguage, isQuestionWithCode, isResponseWithCode } from './utils';
 
 interface RequestData {
-	value: string; prompt?: string; isCode?: boolean; command?: string; language?: string;
+  value: string;
+  prompt?: string;
+  isCode?: boolean;
+  command?: string;
+  language?: string;
 }
 
-
 export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
-	private webView?: vscode.WebviewView;
-	private openai?: OpenAIApi;
+  private webView?: vscode.WebviewView;
+  private openai?: OpenAIApi;
 
-	/**
-	 * Message to be rendered lazily if they haven't been rendered
-	 * in time before resolveWebviewView is called.
-	 */
-	private leftOverMessage?: any;
+  /**
+   * Message to be rendered lazily if they haven't been rendered
+   * in time before resolveWebviewView is called.
+   */
+  private leftOverMessage?: any;
 
-	private apiKey: string = '';
+  private apiKey: string = '';
 
-	constructor(private context: vscode.ExtensionContext) {
+  constructor(private context: vscode.ExtensionContext) {}
 
-	}
+  public resolveWebviewView(
+    webviewView: vscode.WebviewView,
+    _context: vscode.WebviewViewResolveContext,
+    _token: vscode.CancellationToken
+  ) {
+    this.webView = webviewView;
 
-	public resolveWebviewView(
-		webviewView: vscode.WebviewView,
-		_context: vscode.WebviewViewResolveContext,
-		_token: vscode.CancellationToken,
-	) {
-		this.webView = webviewView;
+    webviewView.webview.options = {
+      // Allow scripts in the webview
+      enableScripts: true,
 
-		webviewView.webview.options = {
-			// Allow scripts in the webview
-			enableScripts: true,
+      localResourceRoots: [this.context.extensionUri],
+    };
 
-			localResourceRoots: [
-				this.context.extensionUri
-			]
-		};
+    webviewView.webview.html = this.getWebviewHtml(webviewView.webview);
 
-		webviewView.webview.html = this.getWebviewHtml(webviewView.webview);
+    webviewView.webview.onDidReceiveMessage(
+      async (data: RequestData & { type: string }) => {
+        switch (data.type) {
+          case 'addFreeTextQuestion':
+            this.sendApiRequest(data);
+            break;
+          case 'editCode':
+            vscode.window.activeTextEditor?.insertSnippet(
+              new vscode.SnippetString(data.value)
+            );
+            break;
+          case 'openNew':
+            const document = await vscode.workspace.openTextDocument({
+              content: data.value,
+              language: data.language,
+            });
+            vscode.window.showTextDocument(document);
+            break;
+          case 'clearConversation':
+            this.prepareConversation(true);
+            break;
+          default:
+            break;
+        }
+      }
+    );
 
-		webviewView.webview.onDidReceiveMessage(async (data: RequestData & { type: string; }) => {
-			switch (data.type) {
-				case 'addFreeTextQuestion':
-					this.sendApiRequest(data);
-					break;
-				case 'editCode':
-					vscode.window.activeTextEditor?.insertSnippet(new vscode.SnippetString(data.value));
-					break;
-				case 'openNew':
-					const document = await vscode.workspace.openTextDocument({
-						content: data.value,
-						language: data.language
-					});
-					vscode.window.showTextDocument(document);
-					break;
-				case 'clearConversation':
-					this.prepareConversation(true);
-					break;
-				default:
-					break;
-			}
-		});
+    if (this.leftOverMessage !== null) {
+      // If there were any messages that wasn't delivered, render after resolveWebView is called.
+      this.sendMessage(this.leftOverMessage);
+      this.leftOverMessage = null;
+    }
+  }
 
-		if (this.leftOverMessage !== null) {
-			// If there were any messages that wasn't delivered, render after resolveWebView is called.
-			this.sendMessage(this.leftOverMessage);
-			this.leftOverMessage = null;
-		}
-	}
+  private prepareConversation(reset?: boolean): boolean {
+    const apiKey = getConfigs().apiKey;
+    if (!apiKey) {
+      vscode.window.showErrorMessage(
+        'Make sure to add the ChatGPT API key in your vscode settings, as it has not been provided.'
+      );
+      return false;
+    }
 
-	private prepareConversation(reset?: boolean): boolean {
-		const apiKey = getConfigs().apiKey;
-		if (!apiKey) {
-			vscode.window.showErrorMessage("Make sure to add the ChatGPT API key in your vscode settings, as it has not been provided.");
-			return false;
-		}
+    if (reset || !this.openai || this.apiKey !== apiKey) {
+      this.apiKey = apiKey;
+      try {
+        const configuration = new Configuration({
+          apiKey: getConfigs().apiKey,
+        });
 
-		if (reset || !this.openai || this.apiKey !== apiKey) {
-			this.apiKey = apiKey;
-			try {
-				const configuration = new Configuration({
-					apiKey: getConfigs().apiKey,
-				});
+        this.openai = new OpenAIApi(configuration);
+      } catch (error: any) {
+        vscode.window.showErrorMessage(
+          'Failed to instantiate the Openai API.',
+          error?.message
+        );
+        this.sendMessage({ type: 'addError' });
+        return false;
+      }
+    }
 
-				this.openai = new OpenAIApi(configuration);
+    return true;
+  }
 
-			} catch (error: any) {
-				vscode.window.showErrorMessage("Failed to instantiate the Openai API.", error?.message);
-				this.sendMessage({ type: 'addError' });
-				return false;
-			}
-		}
+  public async sendApiRequest(data: RequestData) {
+    const { value, command, isCode, prompt } = data;
 
-		return true;
-	}
+    this.prepareConversation();
 
-	public async sendApiRequest(data: RequestData) {
-		const { value, command, isCode, prompt } = data;
+    if (!this.openai) {
+      return;
+    }
 
-		this.prepareConversation();
+    let response: string;
+    let question = value;
 
-		if (!this.openai) {
-			return;
-		}
+    if (prompt) {
+      // Add prompt prefix to the code if there was a code block selected
+      question = `${prompt}:\n ${value}`;
+    }
 
-		let response: string;
-		let question = value;
+    // If the ChatGPT view is not in focus/visible; focus on it to render Q&A
+    if (!this.webView) {
+      await vscode.commands.executeCommand('chatgptplus.view.focus');
+    } else {
+      this.webView?.show?.(true);
+    }
 
-		if (prompt) {
-			// Add prompt prefix to the code if there was a code block selected
-			question = `${prompt}:\n ${value}`;
-		}
+    this.sendMessage({
+      type: 'addQuestion',
+      prompt,
+      value,
+      isCode: isQuestionWithCode(command || ''),
+      language: getLanguage(value),
+      command,
+    });
 
-		// If the ChatGPT view is not in focus/visible; focus on it to render Q&A
-		if (!this.webView) {
-			await vscode.commands.executeCommand('chatgptplus.view.focus');
-		} else {
-			this.webView?.show?.(true);
-		}
+    try {
+      const conf = getConfigs();
+      const completion = await this.openai.createCompletion({
+        model: conf.model,
+        prompt: question,
+        max_tokens: conf.maxTokens,
+      });
 
-		this.sendMessage({ type: 'addQuestion', prompt, value, isCode: isQuestionWithCode(command || ''), language: getLanguage(value), command });
+      response = completion.data.choices[0]
+        ? completion.data.choices[0].text || ''
+        : '';
+    } catch (error: any) {
+      vscode.window.showErrorMessage('An error occurred.', error?.message);
+      this.sendMessage({ type: 'addError' });
+      return;
+    }
 
-		try {
-			const conf = getConfigs();
-			const completion = await this.openai.createCompletion({
-				model: conf.model,
-				prompt: question,
-				max_tokens: conf.maxTokens,
+    const language = getLanguage(response);
 
-			});
+    this.sendMessage({
+      type: 'addResponse',
+      value: response,
+      language,
+      prompt,
+      command,
+      isCode: isResponseWithCode(command || ''),
+    });
+  }
 
-			response = completion.data.choices[0] ? completion.data.choices[0].text || '' : '';
+  /**
+   * Message sender, stores if a message cannot be delivered
+   * @param message Message to be sent to WebView
+   * @param ignoreMessageIfNullWebView We will ignore the command if webView is null/not-focused
+   */
+  public sendMessage(message: any, ignoreMessageIfNullWebView?: boolean) {
+    if (this.webView) {
+      this.webView?.webview.postMessage(message);
+    } else if (!ignoreMessageIfNullWebView) {
+      this.leftOverMessage = message;
+    }
+  }
 
-		} catch (error: any) {
-			vscode.window.showErrorMessage("An error occurred.", error?.message);
-			this.sendMessage({ type: 'addError' });
-			return;
-		}
+  private getWebviewHtml(webview: vscode.Webview) {
+    const scriptUri = webview.asWebviewUri(
+      vscode.Uri.joinPath(this.context.extensionUri, 'media', 'main.js')
+    );
+    const stylesMainUri = webview.asWebviewUri(
+      vscode.Uri.joinPath(this.context.extensionUri, 'media', 'main.css')
+    );
 
-		const language = getLanguage(response);
+    const vendorHighlightCss = webview.asWebviewUri(
+      vscode.Uri.joinPath(
+        this.context.extensionUri,
+        'media',
+        'vendor',
+        'highlight.min.css'
+      )
+    );
+    const vendorHighlightJs = webview.asWebviewUri(
+      vscode.Uri.joinPath(
+        this.context.extensionUri,
+        'media',
+        'vendor',
+        'highlight.min.js'
+      )
+    );
+    const vendorMarkedJs = webview.asWebviewUri(
+      vscode.Uri.joinPath(
+        this.context.extensionUri,
+        'media',
+        'vendor',
+        'marked.min.js'
+      )
+    );
+    const vendorTailwindJs = webview.asWebviewUri(
+      vscode.Uri.joinPath(
+        this.context.extensionUri,
+        'media',
+        'vendor',
+        'tailwindcss.3.2.4.min.js'
+      )
+    );
+    const vendorTurndownJs = webview.asWebviewUri(
+      vscode.Uri.joinPath(
+        this.context.extensionUri,
+        'media',
+        'vendor',
+        'turndown.js'
+      )
+    );
 
-		this.sendMessage({
-			type: 'addResponse', value: response, language, prompt, command, isCode: isResponseWithCode(command || '')
-		});
-	}
-
-	/**
-	 * Message sender, stores if a message cannot be delivered
-	 * @param message Message to be sent to WebView
-	 * @param ignoreMessageIfNullWebView We will ignore the command if webView is null/not-focused
-	 */
-	public sendMessage(message: any, ignoreMessageIfNullWebView?: boolean) {
-		if (this.webView) {
-			this.webView?.webview.postMessage(message);
-		} else if (!ignoreMessageIfNullWebView) {
-			this.leftOverMessage = message;
-		}
-	}
-
-	private getWebviewHtml(webview: vscode.Webview) {
-		const scriptUri = webview.asWebviewUri(vscode.Uri.joinPath(this.context.extensionUri, 'media', 'main.js'));
-		const stylesMainUri = webview.asWebviewUri(vscode.Uri.joinPath(this.context.extensionUri, 'media', 'main.css'));
-
-		const vendorHighlightCss = webview.asWebviewUri(vscode.Uri.joinPath(this.context.extensionUri, 'media', 'vendor', 'highlight.min.css'));
-		const vendorHighlightJs = webview.asWebviewUri(vscode.Uri.joinPath(this.context.extensionUri, 'media', 'vendor', 'highlight.min.js'));
-		const vendorMarkedJs = webview.asWebviewUri(vscode.Uri.joinPath(this.context.extensionUri, 'media', 'vendor', 'marked.min.js'));
-		const vendorTailwindJs = webview.asWebviewUri(vscode.Uri.joinPath(this.context.extensionUri, 'media', 'vendor', 'tailwindcss.3.2.4.min.js'));
-		const vendorTurndownJs = webview.asWebviewUri(vscode.Uri.joinPath(this.context.extensionUri, 'media', 'vendor', 'turndown.js'));
-
-		return `<!DOCTYPE html>
+    return `<!DOCTYPE html>
 			<html lang="en">
 			<head>
 				<meta charset="UTF-8">
@@ -247,5 +305,5 @@ export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
 				<script src="${scriptUri}"></script>
 			</body>
 			</html>`;
-	}
+  }
 }
