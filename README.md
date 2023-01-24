@@ -45,55 +45,55 @@ You need to create an API key and enter it into your Visual Studio Code settings
 
 ### Refactor Code
 
-<img src="images\refactor-code.png" alt="Refactor Code" width="800"/>
+<img src="https://raw.githubusercontent.com/ccpu/vscode-chatgpt-plus/main/images/refactor-code.png" alt="Refactor Code" width="800"/>
 
 ---
 
 ### Generate Comment
 
-<img src="images\generate-comment.png" alt="Generate Comment" width="800"/>
+<img src="https://raw.githubusercontent.com/ccpu/vscode-chatgpt-plus/main/images/generate-comment.png" alt="Generate Comment" width="800"/>
 
 ---
 
 ### Generate Code
 
-<img src="images\generate-code.png" alt="Generate Code" width="800"/>
+<img src="https://raw.githubusercontent.com/ccpu/vscode-chatgpt-plus/main/images/generate-code.png" alt="Generate Code" width="800"/>
 
 ---
 
 ### Generate Tests
 
-<img src="images\generate-test.png" alt="Generate Tests" width="800"/>
+<img src="https://raw.githubusercontent.com/ccpu/vscode-chatgpt-plus/main/images/generate-test.png" alt="Generate Tests" width="800"/>
 
 ---
 
 ### Find Bugs
 
-<img src="images\find-bugs.png" alt="Find Bugs" width="800"/>
+<img src="https://raw.githubusercontent.com/ccpu/vscode-chatgpt-plus/main/images/find-bugs.png" alt="Find Bugs" width="800"/>
 
 ---
 
 ### Optimize Code
 
-<img src="images\optimize-code.png" alt="Optimize Code" width="800"/>
+<img src="https://raw.githubusercontent.com/ccpu/vscode-chatgpt-plus/main/images/optimize-code.png" alt="Optimize Code" width="800"/>
 
 ---
 
 ### Explain Code
 
-<img src="images\explain-code.png" alt="Explain Code" width="800"/>
+<img src="https://raw.githubusercontent.com/ccpu/vscode-chatgpt-plus/main/images/explain-code.png" alt="Explain Code" width="800"/>
 
 ---
 
 ### Rewrite Selection
 
-<img src="images\rewrite-selection.png" alt="Rewrite Selection" width="800"/>
+<img src="https://raw.githubusercontent.com/ccpu/vscode-chatgpt-plus/main/images/rewrite-selection.png" alt="Rewrite Selection" width="800"/>
 
 ---
 
 ### Summarize Selection
 
-<img src="images\summarize.png" alt="Summarize Selection" width="800"/>
+<img src="https://raw.githubusercontent.com/ccpu/vscode-chatgpt-plus/main/images/summarize.png" alt="Summarize Selection" width="800"/>
 
 ---
 

@@ -2,11 +2,11 @@
   "name": "chatgptplus",
   "publisher": "molab",
   "displayName": "ChatGPT PLUS",
-  "icon": "images/ai-logo.jpg",
+  "icon": "images/ai-logo.png",
   "description": "Enhance your coding skills and efficiency by leveraging ChatGPT AI with ease.",
   "version": "1.0.0",
   "repository": {
-    "url": "https://github.com/ccpu/vscode-openai-extension"
+    "url": "https://github.com/ccpu/vscode-chatgpt-plus.git"
   },
   "engines": {
     "vscode": "^1.73.0"
