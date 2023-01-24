@@ -2,6 +2,11 @@
 (function () {
   const vscode = acquireVsCodeApi();
 
+  const trimNewLine = (str) => {
+    // Replace all new lines from start and end of string
+    return str.replace(/^\s+|\s+$/g, '');
+  };
+
   let currentLanguage = '';
 
   marked.setOptions({
@@ -47,9 +52,7 @@
 
   const getHtml = (data) => {
     const html = data.isCode
-      ? marked.parse(data.prompt + '\r\n```\n' + data.value + '\n```')
-      : data.prompt
-      ? data.prompt + '\r\n\n' + data.value
+      ? marked.parse('\r\n```\n' + data.value + '\n```')
       : data.value;
     return html;
   };
@@ -66,12 +69,19 @@
 
         list.innerHTML += `<div class="p-4 pb-0 self-end mt-4 question-element-gnc relative" style="background: var(--vscode-input-background)">
                         <h2 class="font-bold mb-5 flex">${userSvg}You</h2>
-                        <input type="hidden" id="prompt" value="${message.prompt}">
-                        <input type="hidden" id="command" value="${message.command}">
-                        <input type="hidden" id="language"  value="${message.language}">
-                        <pre id="value" style="display:none;">${message.value}</pre>
+                        <input type="hidden" id="command" value="${
+                          message.command
+                        }">
+                        <input type="hidden" id="language"  value="${
+                          message.language
+                        }">
+                        <pre id="value" style="display:none;">${
+                          message.value
+                        }</pre>
                         <pre id="html" style="display:none;">${html}</pre>
-                        <input type="hidden" id="isCode"  value="${message.isCode}">
+                        <input type="hidden" id="isCode"  value="${
+                          message.isCode
+                        }">
 
                         <no-export class="mb-2 flex items-center">
                             <div class="resend-actions items-center rounded-lg absolute right-6 code-actions-wrapper flex">
@@ -83,7 +93,15 @@
                                 <button title="Cancel" class="cancel-element-gnc p-1 pr-2 flex items-center">${cancelSvg}Cancel</button>
                             </div>
                         </no-export>
-                        <div class="overflow-y-auto" style="white-space: break-spaces;" >${html}</div>
+                        <div id="edit-inputs">
+                            <div class="overflow-y-auto mb-1" id="input-prompt" style="white-space: break-spaces;"  >${
+                              message.prompt
+                            }</div>
+                            <div class="overflow-y-auto" id="input-html" style="white-space: break-spaces;" >${trimNewLine(
+                              html
+                            )}</div>
+                        <div>
+
                     </div>`;
 
         document.getElementById('in-progress')?.classList?.remove('hidden');
@@ -272,7 +290,7 @@
 
     const getQuestionData = () => {
       const question = targetButton.closest('.question-element-gnc');
-      const prompt = question.querySelector('#prompt').value;
+      const prompt = question.querySelector('#input-prompt').textContent;
       const language = question.querySelector('#language').value;
       const isCode = question.querySelector('#isCode').value;
       const value = question.querySelector('#value').innerHTML;
@@ -346,9 +364,12 @@
 
       const questionData = getQuestionData();
 
-      question.lastElementChild?.setAttribute('contenteditable', true);
+      const inpPrompt = question.querySelector('#input-prompt');
+      const inpHTML = question.querySelector('#input-html');
+      inpPrompt.setAttribute('contenteditable', true);
+      inpHTML.setAttribute('contenteditable', true);
 
-      question.lastElementChild.innerHTML = questionData.value;
+      inpHTML.innerHTML = questionData.value;
 
       return;
     }
@@ -378,10 +399,15 @@
         targetButton.parentElement.parentElement.firstElementChild;
       elements.classList.add('hidden');
       resendElement.classList.remove('hidden');
-      question.lastElementChild?.setAttribute('contenteditable', false);
 
-      const newContent = question.lastElementChild.textContent;
-      question.lastElementChild.innerHTML = getHtml({
+      const inpPrompt = question.querySelector('#input-prompt');
+      const inpHTML = question.querySelector('#input-html');
+      inpPrompt.setAttribute('contenteditable', false);
+      inpHTML.setAttribute('contenteditable', false);
+
+      const newContent = inpHTML.textContent;
+
+      inpHTML.innerHTML = getHtml({
         ...qusData,
         value: newContent || qusData.value,
       });
@@ -404,9 +430,14 @@
         targetButton.parentElement.parentElement.firstElementChild;
       elements.classList.add('hidden');
       resendElement.classList.remove('hidden');
-      question.lastElementChild?.setAttribute('contenteditable', false);
+
+      const inpPrompt = question.querySelector('#input-prompt');
+      const inpHTML = question.querySelector('#input-html');
+      inpPrompt.setAttribute('contenteditable', false);
+      inpHTML.setAttribute('contenteditable', false);
+
       const questionData = getQuestionData();
-      question.lastElementChild.innerHTML = questionData.html;
+      inpHTML.innerHTML = questionData.html;
 
       return;
     }

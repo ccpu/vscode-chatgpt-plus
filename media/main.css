@@ -46,13 +46,11 @@ pre {
 code {
   /* font-family: var(--vscode-editor-font-family) !important; */
   color: inherit;
-  margin-top: -10px;
   /* white-space: break-spaces; */
 }
 
 .text-wrapper {
   position: relative;
-  margin-top: -10px;
 }
 
 .text-content {
@@ -201,7 +199,7 @@ textarea::placeholder {
 }
 
 .pre-code-element .code-actions-wrapper {
-  margin-top: -38px;
+  margin-top: -48px;
 }
 
 .pre-code-element .code-actions-wrapper,

@@ -121,7 +121,7 @@
       },
       {
         "command": "chatgptplus.findProblems",
-        "title": "ChatGPT: Find Bugs",
+        "title": "ChatGPT: Find Problems",
         "enablement": "editorHasSelection"
       },
       {

@@ -1,7 +1,12 @@
 import { Configuration, OpenAIApi } from 'openai-fork';
 import * as vscode from 'vscode';
 import { getConfigs } from './config';
-import { getLanguage, isQuestionWithCode, isResponseWithCode } from './utils';
+import {
+  getLanguage,
+  isQuestionWithCode,
+  isResponseWithCode,
+  trimNewLine,
+} from './utils';
 
 interface RequestData {
   value: string;
@@ -119,7 +124,7 @@ export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
 
     if (prompt) {
       // Add prompt prefix to the code if there was a code block selected
-      question = `${prompt}:\n ${value}`;
+      question = `${prompt}:\n\n ${value}`;
     }
 
     // If the ChatGPT view is not in focus/visible; focus on it to render Q&A
@@ -146,9 +151,9 @@ export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
         max_tokens: conf.maxTokens,
       });
 
-      response = completion.data.choices[0]
-        ? completion.data.choices[0].text || ''
-        : '';
+      response = trimNewLine(
+        completion.data.choices[0] ? completion.data.choices[0].text || '' : ''
+      );
     } catch (error: any) {
       vscode.window.showErrorMessage('An error occurred.', error?.message);
       this.sendMessage({ type: 'addError' });
