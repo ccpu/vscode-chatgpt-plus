@@ -106,7 +106,7 @@ export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
   }
 
   public async sendApiRequest(data: RequestData) {
-    const { value, command, isCode, prompt } = data;
+    const { value, command, prompt } = data;
 
     this.prepareConversation();
 
