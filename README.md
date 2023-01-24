@@ -2,19 +2,22 @@
 
 <br>ChatGPT PLUS</h1>
 
-<p align="center"><strong>Visual Studio Code With ChatGPT, GPT-3 and Codex.</strong></p>
-
 <div align="center">
+<h2>
+
+Make ChatGPT your partner to improve your programming experience.</h2>
 
 </div>
 
-## Let ChatGPT be your copilot in order to enhance your developer experience.
-
 With just one click, you can create files/projects, fix your code, or utilize OpenAI's official GPT3 APIs--all without any configuration! Simply put your API key in the settings, and begin! Exporting all your conversation history at once in Markdown format is also easily done.
 
-# APIKey
+# Features
 
-This extention required an api key, create api key and entered in vscode setting:
+The extension includes a context menu commands that enables you to send the chosen text or code to the chatGPT service and display the output in the chatGPT panel. This panel allows you to copy or move the code to the current file or create a new file and then move the result there.
+
+# API Key
+
+You need to create an API key and enter it into your Visual Studio Code settings to use this extension:
 
 ```
 {
@@ -22,11 +25,7 @@ This extention required an api key, create api key and entered in vscode setting
 }
 ```
 
-# Features
-
-The extension includes a context menu commands that enables you to send the chosen text or code to the chatGPT service and display the output in the chatGPT panel. This panel allows you to copy or move the code to the current file or create a new file and then move the result there.
-
-## Available Commands
+# Available Commands
 
 - ChatGPT: Ask Anything
 - ChatGPT: Refactor Code
@@ -101,19 +100,6 @@ The extension includes a context menu commands that enables you to send the chos
 # Customize your code prompts or use defaults
 
 ```json
-  "chatgptplus.apiKey": {
-    "description": "Openai api key to communicate with chatgpt api",
-    "order": 1,
-    "type": "string"
-  },
-  "chatgptplus.maxTokens": {
-    "default": 1000,
-    "description": "The maximum number of [tokens](/tokenizer) to generate in the completion.  The token count of your prompt plus `max_tokens` cannot exceed the model's context length. Most models have a context length of 2048 tokens (except for the newest models, which support 4096)."
-  },
-  "chatgptplus.model": {
-    "default": "text-davinci-003",
-    "description": "ID of the model to use. You can use the [List models](/docs/api-reference/models/list) API to see all of your available models, or see our [Model overview](/docs/models/overview) for descriptions of them."
-  },
   "chatgptplus.promptPrefix.addTests": {
     "default": "Generate tests:",
     "description": "The prompt prefix used for adding tests for the selected code"
@@ -149,10 +135,6 @@ The extension includes a context menu commands that enables you to send the chos
   "chatgptplus.promptPrefix.rewrite": {
     "default": "Rewrite text: ",
     "description": "Will try to rewrite sentences."
-  },
-  "chatgptplus.response.showNotification": {
-    "default": false,
-    "description": "Choose whether you'd like to receive a notification when ChatGPT bot responds to your query."
   }
 ```
 
