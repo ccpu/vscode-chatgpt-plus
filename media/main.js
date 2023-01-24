@@ -66,17 +66,17 @@
     switch (message.type) {
       case 'addQuestion':
         const html = getHtml(message);
-
+        console.log(message);
         list.innerHTML += `<div class="p-4 pb-0 self-end mt-4 question-element-gnc relative" style="background: var(--vscode-input-background)">
                         <h2 class="font-bold mb-5 flex">${userSvg}You</h2>
                         <input type="hidden" id="command" value="${
-                          message.command
+                          message.command || ''
                         }">
                         <input type="hidden" id="language"  value="${
-                          message.language
+                          message.language || ''
                         }">
                         <pre id="value" style="display:none;">${
-                          message.value
+                          message.value || ''
                         }</pre>
                         <pre id="html" style="display:none;">${html}</pre>
                         <input type="hidden" id="isCode"  value="${
@@ -95,7 +95,7 @@
                         </no-export>
                         <div id="edit-inputs">
                             <div class="overflow-y-auto mb-1" id="input-prompt" style="white-space: break-spaces;"  >${
-                              message.prompt
+                              message.prompt || ''
                             }</div>
                             <div class="overflow-y-auto" id="input-html" style="white-space: break-spaces;" >${trimNewLine(
                               html
@@ -366,8 +366,14 @@
 
       const inpPrompt = question.querySelector('#input-prompt');
       const inpHTML = question.querySelector('#input-html');
-      inpPrompt.setAttribute('contenteditable', true);
       inpHTML.setAttribute('contenteditable', true);
+
+      if (questionData.prompt) {
+        inpPrompt.setAttribute('contenteditable', true);
+        inpPrompt.style.display = 'block';
+      } else {
+        inpPrompt.style.display = 'none';
+      }
 
       inpHTML.innerHTML = questionData.value;
 

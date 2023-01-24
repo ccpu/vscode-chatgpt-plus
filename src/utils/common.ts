@@ -1,5 +1,6 @@
 export const isQuestionWithCode = (command: string) => {
   if (
+    command &&
     ![
       'chatgptplus.rewrite',
       'chatgptplus.send',
@@ -14,6 +15,7 @@ export const isQuestionWithCode = (command: string) => {
 
 export const isResponseWithCode = (command: string) => {
   if (
+    command &&
     ![
       'chatgptplus.rewrite',
       'chatgptplus.send',
