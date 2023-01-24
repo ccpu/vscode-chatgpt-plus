@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import ChatGptViewProvider from './chatgpt-view-provider';
-import { getLanguage, isResponseWithCode } from './utils';
+import { getLanguage, isResponseWithCode, trimNewLine } from './utils';
 
 export async function activate(context: vscode.ExtensionContext) {
   const chatGptExtensionConfig =
@@ -82,7 +82,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
       if (selection) {
         provider?.sendApiRequest({
-          value: selection,
+          value: trimNewLine(selection),
           command,
           isCode,
           prompt: commandPrefix,
