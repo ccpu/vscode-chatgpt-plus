@@ -4,7 +4,7 @@
   "displayName": "ChatGPT PLUS",
   "icon": "images/ai-logo.jpg",
   "description": "Enhance your coding skills and efficiency by leveraging ChatGPT AI with ease.",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "repository": {
     "url": "https://github.com/ccpu/vscode-chatgpt-plus.git"
   },
@@ -238,7 +238,7 @@
           "type": "string"
         },
         "chatgptplus.promptPrefix.rewrite": {
-          "default": "Rewrite text: ",
+          "default": "Rewrite following sentence: ",
           "description": "Will try to rewrite sentences.",
           "type": "string"
         },
