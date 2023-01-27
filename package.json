@@ -4,7 +4,7 @@
   "displayName": "ChatGPT PLUS",
   "icon": "images/ai-logo.jpg",
   "description": "Enhance your coding skills and efficiency by leveraging ChatGPT AI with ease.",
-  "version": "1.0.3",
+  "version": "2.0.0",
   "repository": {
     "url": "https://github.com/ccpu/vscode-chatgpt-plus.git"
   },
@@ -31,8 +31,8 @@
     "onView:chatgptplus.view",
     "onCommand:chatgptplus.clearSession",
     "onCommand:chatgptplus.freeText",
-    "onCommand:chatgptplus.addTests",
-    "onCommand:chatgptplus.findProblems",
+    "onCommand:chatgptplus.addTest",
+    "onCommand:chatgptplus.findProblem",
     "onCommand:chatgptplus.optimize",
     "onCommand:chatgptplus.explain",
     "onCommand:chatgptplus.clearConversation",
@@ -53,12 +53,12 @@
           "group": "chatGpt@4"
         },
         {
-          "command": "chatgptplus.addTests",
+          "command": "chatgptplus.addTest",
           "group": "chatGpt@5",
           "when": "editorHasSelection"
         },
         {
-          "command": "chatgptplus.findProblems",
+          "command": "chatgptplus.findProblem",
           "group": "chatGpt@2",
           "when": "editorHasSelection"
         },
@@ -115,12 +115,12 @@
         "when": "editorHasSelection"
       },
       {
-        "command": "chatgptplus.addTests",
+        "command": "chatgptplus.addTest",
         "title": "ChatGPT: Generate Tests",
         "enablement": "editorHasSelection"
       },
       {
-        "command": "chatgptplus.findProblems",
+        "command": "chatgptplus.findProblem",
         "title": "ChatGPT: Find Problems",
         "enablement": "editorHasSelection"
       },
@@ -193,10 +193,12 @@
           "description": "ID of the model to use. You can use the [List models](/docs/api-reference/models/list) API to see all of your available models, or see our [Model overview](/docs/models/overview) for descriptions of them.",
           "type": "string"
         },
-        "chatgptplus.promptPrefix.addTests": {
-          "default": "Generate tests:",
+        "chatgptplus.promptPrefix.addTest": {
+          "default": {
+            "default": "Generate tests:"
+          },
           "description": "The prompt prefix used for adding tests for the selected code",
-          "type": "string"
+          "type": "object"
         },
         "chatgptplus.promptPrefix.send": {
           "description": "Sends the selected text/code to ChatGPT for a response.",
@@ -208,34 +210,46 @@
           "type": "string"
         },
         "chatgptplus.promptPrefix.comment": {
-          "default": "Generate short comment: ",
+          "default": {
+            "default": "Generate short comment: "
+          },
           "description": "The prompt prefix used to generate comment for selected code.",
-          "type": "string"
+          "type": "object"
         },
         "chatgptplus.promptPrefix.explain": {
-          "default": "Explain code: ",
+          "default": {
+            "default": "Explain code: "
+          },
           "description": "The prompt prefix used for explaining the selected code",
-          "type": "string"
+          "type": "object"
         },
-        "chatgptplus.promptPrefix.findProblems": {
-          "default": "Find problems: ",
+        "chatgptplus.promptPrefix.findProblem": {
+          "default": {
+            "default": "Find problems: "
+          },
           "description": "The prompt prefix used for finding problems for the selected code",
-          "type": "string"
+          "type": "object"
         },
         "chatgptplus.promptPrefix.generate": {
-          "default": "Generate code: ",
+          "default": {
+            "default": "Generate code: "
+          },
           "description": "The prompt prefix used generate code base on text",
-          "type": "string"
+          "type": "object"
         },
         "chatgptplus.promptPrefix.optimize": {
-          "default": "Optimize code: ",
+          "default": {
+            "default": "Optimize code: "
+          },
           "description": "The prompt prefix used for optimizing the selected code",
-          "type": "string"
+          "type": "object"
         },
         "chatgptplus.promptPrefix.refactor": {
-          "default": "Refactor code and explain what's changed: ",
+          "default": {
+            "default": "Refactor code and explain what's changed: "
+          },
           "description": "The prompt prefix used for refactoring the selected code",
-          "type": "string"
+          "type": "object"
         },
         "chatgptplus.promptPrefix.rewrite": {
           "default": "Rewrite following sentence: ",

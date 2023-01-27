@@ -20,7 +20,7 @@ export const isResponseWithCode = (command: string) => {
       'chatgptplus.rewrite',
       'chatgptplus.send',
       'chatgptplus.explain',
-      'chatgptplus.findProblems',
+      'chatgptplus.findProblem',
       'chatgptplus.comment',
       'chatgptplus.summarize',
     ].includes(command)

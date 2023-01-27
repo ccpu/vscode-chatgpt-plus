@@ -100,42 +100,91 @@ You need to create an API key and enter it into your Visual Studio Code settings
 # Customize your code prompts or use defaults
 
 ```json
-  "chatgptplus.promptPrefix.addTests": {
-    "default": "Generate tests:",
-    "description": "The prompt prefix used for adding tests for the selected code"
-  },
-  "chatgptplus.promptPrefix.summarize": {
-    "description": "The prompt prefix used for summarizing text.",
-    "default": "Summarize text: "
-  },
-  "chatgptplus.promptPrefix.comment": {
-    "default": "Generate short comment: ",
-    "description": "The prompt prefix used to generate comment for selected code."
-  },
-  "chatgptplus.promptPrefix.explain": {
-    "default": "Explain code: ",
-    "description": "The prompt prefix used for explaining the selected code"
-  },
-  "chatgptplus.promptPrefix.findProblems": {
-    "default": "Find problems: ",
-    "description": "The prompt prefix used for finding problems for the selected code"
-  },
-  "chatgptplus.promptPrefix.generate": {
-    "default": "Generate code: ",
-    "description": "The prompt prefix used generate code base on text"
-  },
-  "chatgptplus.promptPrefix.optimize": {
-    "default": "Optimize code: ",
-    "description": "The prompt prefix used for optimizing the selected code"
-  },
-  "chatgptplus.promptPrefix.refactor": {
-    "default": "Refactor code and explain what's changed: ",
-    "description": "The prompt prefix used for refactoring the selected code"
-  },
-  "chatgptplus.promptPrefix.rewrite": {
-    "default": "Rewrite text: ",
-    "description": "Will try to rewrite sentences."
-  }
+        "chatgptplus.promptPrefix.addTest": {
+          "default": {
+            "default": "Generate tests:"
+          },
+          "description": "The prompt prefix used for adding tests for the selected code",
+          "type": "object"
+        },
+        "chatgptplus.promptPrefix.summarize": {
+          "description": "The prompt prefix used for summarizing text.",
+          "default": "Summarize text: ",
+          "type": "string"
+        },
+        "chatgptplus.promptPrefix.comment": {
+          "default": {
+            "default": "Generate short comment: "
+          },
+          "description": "The prompt prefix used to generate comment for selected code.",
+          "type": "object"
+        },
+        "chatgptplus.promptPrefix.explain": {
+          "default": {
+            "default": "Explain code: "
+          },
+          "description": "The prompt prefix used for explaining the selected code",
+          "type": "object"
+        },
+        "chatgptplus.promptPrefix.findProblem": {
+          "default": {
+            "default": "Find problems: "
+          },
+          "description": "The prompt prefix used for finding problems for the selected code",
+          "type": "object"
+        },
+        "chatgptplus.promptPrefix.generate": {
+          "default": {
+            "default": "Generate code: "
+          },
+          "description": "The prompt prefix used generate code base on text",
+          "type": "object"
+        },
+        "chatgptplus.promptPrefix.optimize": {
+          "default": {
+            "default": "Optimize code: "
+          },
+          "description": "The prompt prefix used for optimizing the selected code",
+          "type": "object"
+        },
+        "chatgptplus.promptPrefix.refactor": {
+          "default": {
+            "default": "Refactor code and explain what's changed: "
+          },
+          "description": "The prompt prefix used for refactoring the selected code",
+           "type": "object"
+        },
+        "chatgptplus.promptPrefix.rewrite": {
+          "default": "Rewrite following sentence: ",
+          "description": "Will try to rewrite sentences.",
+          "type": "string"
+        }
+```
+
+If you wish to set prompts based on file type, simply include the file name and the prompt value you desire:
+
+```json
+        "chatgptplus.promptPrefix.addTest": {
+          "typescript": "Generate tests typescript:"
+        }
+```
+
+## Set Prompts Base on File type
+
+# Extension Options
+
+```json
+        "chatgptplus.apiKey": {
+          "description": "Openai api key to communicate with chatgpt api",
+        },
+        "chatgptplus.maxTokens": {
+          "default": 1000,
+          "description": "The maximum number of [tokens](/tokenizer) to generate in the completion.  The token count of your prompt plus `max_tokens` cannot exceed the model's context length. Most models have a context length of 2048 tokens (except for the newest models, which support 4096).",
+        },
+        "chatgptplus.model": {
+          "default": "text-davinci-003",
+          "description": "ID of the model to use. You can use the [List models](/docs/api-reference/models/list) API to see all of your available models, or see our [Model overview](/docs/models/overview) for descriptions of them.",
+        }
 ```
 
 # Caveats & Limitations

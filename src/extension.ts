@@ -52,8 +52,8 @@ export async function activate(context: vscode.ExtensionContext) {
   );
 
   const commands = [
-    ['chatgptplus.addTests', 'promptPrefix.addTests'],
-    ['chatgptplus.findProblems', 'promptPrefix.findProblems'],
+    ['chatgptplus.addTest', 'promptPrefix.addTest'],
+    ['chatgptplus.findProblem', 'promptPrefix.findProblem'],
     ['chatgptplus.refactor', 'promptPrefix.refactor'],
     ['chatgptplus.optimize', 'promptPrefix.optimize'],
     ['chatgptplus.explain', 'promptPrefix.explain'],
@@ -66,7 +66,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
   const registeredCommands = commands.map(([command, configKey]) =>
     vscode.commands.registerCommand(command, () => {
-      let commandPrefix = chatGptExtensionConfig.get(configKey) as string;
+      let commandPrefix = chatGptExtensionConfig.get(configKey) as any;
       const editor = vscode.window.activeTextEditor;
       if (!editor) {
         return;
@@ -74,10 +74,22 @@ export async function activate(context: vscode.ExtensionContext) {
 
       const selection = editor.document.getText(editor.selection);
 
+      const language = getLanguage(selection);
+
+      if (typeof commandPrefix === 'object') {
+        if (commandPrefix[editor.document.languageId]) {
+          commandPrefix = commandPrefix[editor.document.languageId];
+        } else if (language && commandPrefix[language]) {
+          commandPrefix = commandPrefix[language];
+        } else {
+          commandPrefix = commandPrefix.default;
+        }
+      }
+
       const isCode = isResponseWithCode(command);
 
-      if (isCode) {
-        commandPrefix += ` (${getLanguage(selection)})\n`;
+      if (isCode && language && commandPrefix.indexOf(language) === -1) {
+        commandPrefix += ` (${language})\n`;
       }
 
       if (selection) {

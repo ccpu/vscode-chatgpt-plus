@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 
 export const getLanguage = (_code: string) => {
   const editor = vscode.window.activeTextEditor;
+
   if (!editor) {
     return;
   }
